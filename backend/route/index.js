@@ -17,6 +17,7 @@ const leadSummaryController = require('../controller/leadSummary.controller');
 const fetchleadController = require('../controller/fetchAllLeads.controller');
 const fetchoneLeadController = require('../controller/fetchleads.controller');
 const updateLeadstatusController = require('../controller/updateLeadstatus.controller');
+const commissionSummaryController = require('../controller/commissionController.js');
 
 
 router.post('/register',userRegisterController);
@@ -38,6 +39,7 @@ router.post('/lead-summary',authToken,leadSummaryController.leadSummary);
 router.get('/fetch-all-leads',authToken,fetchleadController.fetchAllLeads);
 router.get('/fetchlead',authToken, fetchoneLeadController.fetchLeads);
 router.put('/update-lead/:id',authToken,updateLeadstatusController.updateLead);
+router.get('/commissionSummary',authToken,commissionSummaryController);
 
 
 // For  Carousel 
@@ -55,3 +57,4 @@ router.get('/userLogout',employeeController.logout);
 
 
 module.exports = router
+
