@@ -39,7 +39,7 @@ router.post('/lead-summary',authToken,leadSummaryController.leadSummary);
 router.get('/fetch-all-leads',authToken,fetchleadController.fetchAllLeads);
 router.get('/fetchlead',authToken, fetchoneLeadController.fetchLeads);
 router.put('/update-lead/:id',authToken,updateLeadstatusController.updateLead);
-router.get('/commissionSummary',authToken,commissionSummaryController);
+router.get('/commissionSummary',authToken,commissionSummaryController.summary);
 
 
 // For  Carousel 
@@ -57,4 +57,5 @@ router.get('/userLogout',employeeController.logout);
 
 
 module.exports = router
+
 
