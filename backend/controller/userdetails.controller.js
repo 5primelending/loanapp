@@ -5,7 +5,7 @@ const Profession = require('../models/profession');
 async function userDetailsController(req, res) {
     try {
         // Extract user ID from request params or body
-        const userId = req.params.id; // Assuming the user ID is passed as a route parameter
+        const userId = req.userId; // Assuming the user ID is passed as a route parameter
 
         // Validate ID format
         if (!mongoose.Types.ObjectId.isValid(userId)) {

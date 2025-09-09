@@ -1,41 +1,44 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
-async function authToken(req,res,next){
-    try{
-        const token = req.cookies?.token
+async function authToken(req, res, next) {
+    try {
+        // ✅ Get token from cookies or Authorization header
+        let token = req.cookies?.token || req.header('Authorization');
 
-        console.log("token ",token)
-        if(!token){
-            return res.status(200).json({
-                message : "Please Login...!",
-                error : true,
-                success : false
-            })
+        console.log("Token Received: ", token);
+
+        // ✅ If token is in Authorization header, remove 'Bearer ' prefix
+        if (token?.startsWith("Bearer ")) {
+            token = token.split(" ")[1]; // Get actual token
         }
 
-        jwt.verify(token, process.env.TOKEN_SECRET_KEY, function(err, decoded) {
-            console.log(err)
-            console.log("decoded",decoded)
-            
-            if(err){
-                console.log("error auth", err)
-            }
+        // ✅ Check if token is missing
+        if (!token) {
+            return res.status(401).json({
+                message: "Please Login...!",
+                error: true,
+                success: false
+            });
+        }
 
-            req.userId = decoded?._id
+        // ✅ Verify token (synchronous method inside try-catch)
+        const decoded = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
 
-            next()
+        console.log("Decoded Token:", decoded);
+
+        // ✅ Attach user ID from token payload to request
+        req.userId = decoded._id; 
+
+        next(); // ✅ Move to next middleware
+    } catch (err) {
+        console.error("Auth Error:", err.message);
+
+        return res.status(401).json({
+            message: "Invalid or Expired Token",
+            error: true,
+            success: false
         });
-
-
-    }catch(err){
-        res.status(400).json({
-            message : err.message || err,
-            data : [],
-            error : true,
-            success : false
-        })
     }
 }
 
-
-module.exports = authToken
+module.exports = authToken;

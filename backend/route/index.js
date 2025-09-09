@@ -10,21 +10,48 @@ const leadController = require('../controller/addlead.controller');
 const userDetailsController = require('../controller/userdetails.controller');
 const userUpdateDetailsController = require('../controller/userUpdateDetails.controller');
 const userDeleteController = require('../controller/userDelete.controller');
+const employeeController = require('../controller/employee.controller');
+const carouselController = require("../controller/carousel.controller");
+const upload = require("../middleware/carouselupload");
+const leadSummaryController = require('../controller/leadSummary.controller');
+const fetchleadController = require('../controller/fetchAllLeads.controller');
+const fetchoneLeadController = require('../controller/fetchleads.controller');
+const updateLeadstatusController = require('../controller/updateLeadstatus.controller');
+
 
 router.post('/register',userRegisterController);
 router.post('/send-otp',loginController.sendOTP);
 router.post('/verify-otp',loginController.verifyOTP);
 router.get('/logout',authToken,logoutController);
-router.get('/userdetails/:id',authToken,userDetailsController);
-router.put('/user-update/:id',authToken,userUpdateDetailsController);
-router.delete('/user-delete/:id',authToken,userDeleteController);
+router.get('/userdetails',authToken,userDetailsController);
+router.put('/user-update',authToken,userUpdateDetailsController);
+router.delete('/user-delete',authToken,userDeleteController);
 //For Profession
 router.post('/addprofession',authToken,professionController.addprofession); //
 router.get('/allprofession',professionController.listprofession); //
 router.put('/updateprofession/:id',authToken,professionController.editprofession);
 router.delete('/deleteprofession/:id',authToken,professionController.deleteprofession);
 
-//For Profession
-router.post('/addlead',leadController.add); //
+//For Lead
+router.post('/addlead',authToken,leadController.add); //
+router.post('/lead-summary',authToken,leadSummaryController.leadSummary);
+router.get('/fetch-all-leads',authToken,fetchleadController.fetchAllLeads);
+router.get('/fetchlead',authToken, fetchoneLeadController.fetchLeads);
+router.put('/update-lead/:id',authToken,updateLeadstatusController.updateLead);
+
+
+// For  Carousel 
+router.post("/createCarousel", upload.single("image"), carouselController.createCarousel); // Use Multer for image upload
+router.get("/getCarousels", carouselController.getCarousels);
+router.get("/getCarouselById:id", carouselController.getCarouselById);
+router.put("/updateCarousel/:id", upload.single("image"), carouselController.updateCarousel);
+router.delete("/deleteCarousel/:id", carouselController.deleteCarousel);
+
+//For Dashboard
+router.post('/signup',employeeController.add);
+router.post('/login',employeeController.login);
+router.get('/user-details',employeeController.profile);
+router.get('/userLogout',employeeController.logout);
+
 
 module.exports = router

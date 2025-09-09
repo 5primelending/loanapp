@@ -1,85 +1,72 @@
 const  mongoose = require("mongoose");
 const leadSchema = new mongoose.Schema({
-     leadtype:{
-         type:String,
-         required:[true,'Provide Leadtype']
-     },
-     loantype:{
-        type:String,
-        required:[true,'Provide Loan Type']
-     },
-     loanamount:{
-        type:Number,
-        required:[true,'Provide Loan Amount']
-     },
-     loanTenure:{
-        type:String,
-        default:""
-     },
-     panNumber:{
-        type:String,
-        default:""
-     },
-     firstName:{
-        type:String,
-        required:[true,'Provide First Name']
-     },
-     lastName:{
-        type:String,
-        required:[true,'Provide Last Name']
-     },
-     gender:{
-        type:String,
-        required:[true,'Provide Gender']
-     },
-     mobile:{
-        type:String,
-        required:[true,'Provide Mobile No.']
-     },
-     email:{
-        type:String,
-        required:[true,'Provide Email']
-     },
-     dob:{
-      type:Date,
-      required:[true,'Provide DOB']
-   },
-     pincode:{
-        type:String,
-        required:[true,'Provide Pincode']
-     },
-     anualIncome:{
-      type:String,
-      default:""
-     },
-     cobAnualIncome:{
-        type:Number,
-        default:""
-     },
-     exitingEmi:{
-         type:Number,
-         default:""
-      },
-      profession:{
-         type:String,
-         default:""
-      },
-      salaryMode:{
-         type:String,
-         default:""
-      },
-      companyName:{
-         type:String,
-         default:""
-      },
-      companyType:{
-         type:String,
-         default:""
-      }
-
-},{
-    timestamps:true
-})
+    first_name: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  last_name: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  mobile_no: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  email: {
+    type: String,
+    required: true,
+    trim: true,
+    lowercase: true
+  },
+  loan_type: {
+    type: String,
+    required: true
+  },
+  loan_purpose: {
+    type: String
+  },
+  refer_to_ambak: {
+    type: Boolean,
+    default: false
+  },
+  property_state: {
+    type: String,
+    required: true
+  },
+  property_city: {
+    type: String,
+    required: true
+  },
+  required_amount: {
+    type: Number,
+    required: true
+  },
+  status: {
+    type: String,
+    default: 'New Leads'
+  },
+  follow_up_date: {
+    type: Date
+  },
+  assigned_to: {
+    type: String
+  },
+  comments: {
+    type: String
+  },
+  source: {
+    type: String
+  },
+  documents_uploaded: {
+    type: Boolean,
+    default: false
+  }
+}, {
+  timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+});
 
 const leadModal = mongoose.model('addlead',leadSchema)
 module.exports = leadModal

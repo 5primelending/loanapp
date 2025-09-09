@@ -1,0 +1,65 @@
+.add-carousel {
+    padding: 20px;
+    background-color: #e5e9eb;
+    height: 100vh;
+  }
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.mbsc-ios .mbsc-form-grid .mbsc-textfield-wrapper {
+    margin: 0.75em 1em;
+  }
+
+.carousel-card {
+    margin-top: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+.btn-btn {
+    background: #000;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  input[type="text"], input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .preview-image {
+    width: 100px;
+    height: 60px;
+    object-fit: cover;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  

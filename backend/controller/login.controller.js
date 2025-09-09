@@ -43,11 +43,11 @@ const loginController = {
             //    to: mobile
             //});
 
-            res.status(200).json({ message: "OTP sent successfully to mobile", data:otp });
+            res.status(200).json({ message: "OTP sent successfully to mobile", data:otp,error:false,success:true });
 
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: "Server error, please try again later" });
+            res.status(500).json({ error: "Server error, please try again later",error:true,success:false });
         }
     },
 
@@ -93,25 +93,28 @@ const loginController = {
             );
 
             const tokenOptions = {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production', // Only secure in production (HTTPS)
-                sameSite: 'Strict' // Add this for additional CSRF protection
+                httpOnly: true, // Security best practice
+                secure: false,  // Set to true in production (for HTTPS)
+                sameSite: 'Strict'
+              //  httpOnly: true,
+              //  secure: process.env.NODE_ENV === 'production', // Only secure in production (HTTPS)
+               // sameSite: 'Strict' // Add this for additional CSRF protection
             };
 
 
 
             res.cookie("token", token, tokenOptions).status(200).json({
                 message: "Login successful",
-                user: {
-                    name: user.name,
-                    email: user.email,
-                    mobile: user.mobile
-                }
+                data:user,
+                token,
+                error:false,
+                success:true
             });
 
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: "Server error, please try again later" });
+            res.status(500).json({ error: "Server error, please try again later",error:true,
+                success:false });
         }
     }
 };

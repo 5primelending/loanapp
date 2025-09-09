@@ -1,61 +1,70 @@
 const leadModel = require('../models/lead');
-const leadpropertyModel = require('../models/leadproperty');
-const leadkycModel = require('../models/leadkyc');
-const mongoose = require('mongoose'); // Import mongoose
-
 const leadController = {
-    add: async (req, res) => {
-        try {
-            const { leadtype, loantype, loanamount, firstName, lastName, gender, mobile, email, dob, pincode } = req.body;
+  add: async (req, res) => {
+    try {
+      const {
+        first_name,
+        last_name,
+        mobile_no,
+        email,
+        loan_type,
+        loan_purpose,
+        refer_to_ambak,
+        property_state,
+        property_city,
+        required_amount,
+        status,              // Optional
+        follow_up_date,      // Optional
+        assigned_to,         // Optional
+        comments,            // Optional
+        source,              // Optional
+        documents_uploaded   // Optional
+      } = req.body;
 
-            if (!leadtype || !loantype || !loanamount || !firstName || !lastName || !gender || !mobile || !email || !dob || !pincode) {
-                return res.status(400).json({
-                    message: "Provide All Details",
-                    error: true,
-                    success: false
-                });
-            }
+      // ✅ Required field check
+      if (!first_name || !last_name || !mobile_no || !email || !loan_type || !required_amount || !property_state || !property_city || !status || !source) {
+        return res.status(400).json({ message: 'Missing required fields' });
+      }
 
-            const payload = req.body;
-            const lead = new leadModel(payload); // Use leadModel here
-            const savedlead = await lead.save();
-            const leadid = savedlead._id;
+      // ✅ Create a new lead
+      const newLead = new leadModel({
+        first_name,
+        last_name,
+        mobile_no,
+        email,
+        loan_type,
+        loan_purpose,
+        refer_to_ambak,
+        property_state,
+        property_city,
+        required_amount,
+        status,
+        follow_up_date,
+        assigned_to,
+        comments,
+        source,
+        documents_uploaded
+      });
 
-            // Validate lead ID
-            if (!mongoose.Types.ObjectId.isValid(leadid)) {
-                return res.status(400).json({ message: "Invalid Lead ID", error: true, success: false });
-            }
+      const savedLead = await newLead.save();
 
-            const leadExists = await leadModel.findById(leadid); // Use leadModel here
-            if (!leadExists) {
-                return res.status(400).json({ message: "Application Id not found", error: true, success: false });
-            }
-            
-            const payload2 = { ...req.body, leadid: leadid }; // Include leadId for association
-            const leadproperty = new leadpropertyModel(payload2); // Use leadpropertyModel here
-            const savedleadproperty = await leadproperty.save();
+      return res.status(201).json({
+        data: { lead: savedLead },
+        success: true,
+        error: false,
+        message: "New application added successfully!",
+      });
 
-            const payload3 = { ...req.body, leadid: leadid }; // Include leadId for association
-            const leadkyc = new leadkycModel(payload3); // Use leadkycModel here
-            const savedleadkyc = await leadkyc.save();
-
-           
-            res.status(201).json({
-                data: { lead: savedlead, leadProperty: savedleadproperty, leadkyc:savedleadkyc }, // Return both lead and leadproperty
-                success: true,
-                error: false,
-                message: "New Application added successfully!",
-            });
-
-        } catch (error) {
-            console.error("Error in add:", error); // Log the error for debugging
-            return res.status(500).json({
-                message: error.message || "Internal Server Error", // More informative error message
-                error: true,
-                success: false
-            });
-        }
+    } catch (error) {
+      console.error("Error in leadController.add:", error);
+      return res.status(500).json({
+        message: error.message || "Internal Server Error",
+        error: true,
+        success: false
+      });
     }
+  }
 };
 
 module.exports = leadController;
+

@@ -5,7 +5,7 @@ const Profession = require('../models/profession');
 async function userUpdateDetailsController(req, res) {
     try {
         // Extract user ID from request params
-        const userId = req.params.id;
+        const userId = req.userId;
 
         // Validate ID format
         if (!mongoose.Types.ObjectId.isValid(userId)) {

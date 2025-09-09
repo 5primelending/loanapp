@@ -1,4 +1,4 @@
-const backendDomin = "http://localhost:8080"
+const backendDomin="https://api.primelendinghub.in"
 
 const SummaryApi = {
     signUP : {
@@ -6,7 +6,7 @@ const SummaryApi = {
         method : "post"
     },
     signIn : {
-        url : `${backendDomin}/api/signin`,
+        url : `${backendDomin}/api/login`,
         method : "post"
     },
     current_user : {
@@ -24,8 +24,19 @@ const SummaryApi = {
     updateUser : {
         url : `${backendDomin}/api/update-user`,
         method : "post"
+    },
+    createCarousel : {
+        url : `${backendDomin}/api/createCarousel`,
+        method : "post"
+    },
+    getCarousels : {
+        url : `${backendDomin}/api/getCarousels`,
+        method : "get"
+    },
+    deleteCarousel: {
+        url : `${backendDomin}/api/deleteCarousel`,
+        method : "delete"
     }
-  
 }
 
 
