@@ -3,7 +3,6 @@ const leadModel = require('../models/lead');
 const commissionController = {
   summary: async (req, res) => {
     try {
-      // Optional filters: date range, assigned_to, etc.
       const { startDate, endDate, assigned_to } = req.query;
 
       const match = {};
@@ -18,7 +17,6 @@ const commissionController = {
         match.assigned_to = assigned_to;
       }
 
-      // Group by status and sum commissions
       const result = await leadModel.aggregate([
         { $match: match },
         {
@@ -30,18 +28,22 @@ const commissionController = {
         },
       ]);
 
-      // Format response
-      const totals = {};
-      const counts = {};
-      let grandTotal = 0;
-      let grandCount = 0;
+      // Defaults
+      let total_pending_amount = 0;
+      let total_approved_amount = 0;
+      let pending_count = 0;
+      let approved_count = 0;
 
       result.forEach(row => {
-        const status = row._id || "unknown";
-        totals[status] = row.totalCommission;
-        counts[status] = row.count;
-        grandTotal += row.totalCommission;
-        grandCount += row.count;
+        const status = (row._id || "").toLowerCase();
+        if (status === "pending") {
+          total_pending_amount = row.totalCommission;
+          pending_count = row.count;
+        }
+        if (status === "approved") {
+          total_approved_amount = row.totalCommission;
+          approved_count = row.count;
+        }
       });
 
       return res.status(200).json({
@@ -49,10 +51,12 @@ const commissionController = {
         error: false,
         message: "Commission summary fetched successfully",
         data: {
-          totals,   // { approved: 1000, pending: 500 }
-          counts,   // { approved: 5, pending: 2 }
-          grandTotal,
-          grandCount,
+          total_pending_amount,
+          pending_count,
+          total_approved_amount,
+          approved_count,
+          grand_total: total_pending_amount + total_approved_amount,
+          grand_count: pending_count + approved_count,
         },
       });
 
@@ -66,4 +70,5 @@ const commissionController = {
     }
   },
 };
+
 module.exports = commissionController;
