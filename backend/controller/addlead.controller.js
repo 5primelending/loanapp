@@ -17,7 +17,7 @@ const leadController = {
         follow_up_date,      // Optional
         assigned_to,         // Optional
         comments,            // Optional
-        source,              // Optional
+        source,
         documents_uploaded   // Optional
       } = req.body;
 
@@ -25,7 +25,9 @@ const leadController = {
       if (!first_name || !last_name || !mobile_no || !email || !loan_type || !required_amount || !property_state || !property_city || !status || !source) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
-
+          // Convert to number safely
+             const requiredAmountNum = Number(required_amount) || 0;
+             const commission_amount = (requiredAmountNum * 2) / 100;
       // ✅ Create a new lead
       const newLead = new leadModel({
         first_name,
@@ -43,6 +45,7 @@ const leadController = {
         assigned_to,
         comments,
         source,
+        commission_amount,
         documents_uploaded
       });
 

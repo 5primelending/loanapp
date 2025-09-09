@@ -60,6 +60,12 @@ const leadSchema = new mongoose.Schema({
   source: {
     type: String
   },
+  commission_status:{
+    type:String,
+  },
+  commission_amount:{
+    type:Number,
+  },
   documents_uploaded: {
     type: Boolean,
     default: false
