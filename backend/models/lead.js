@@ -62,6 +62,7 @@ const leadSchema = new mongoose.Schema({
   },
   commission_status:{
     type:String,
+      default:'pending',
   },
   commission_amount:{
     type:Number,
@@ -76,3 +77,4 @@ const leadSchema = new mongoose.Schema({
 
 const leadModal = mongoose.model('addlead',leadSchema)
 module.exports = leadModal
+
